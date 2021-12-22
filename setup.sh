@@ -27,6 +27,11 @@ for file in ~/dotfiles/dotfiles/*(DN); do
   NEW_PATH=$(echo $file | sed "s/dotfiles\/dotfiles\///")
 
   if [[ ! -L $NEW_PATH ]]; then
-    ln -s $file $NEW_PATH
+    if [[ -f $NEW_PATH ]]; then
+      echo "$NEW_PATH exists and is not a proper symlink, renaming file to $NEW_PATH.backup"
+      mv $NEW_PATH $NEW_PATH.backup
+    else  
+      ln -s $file $NEW_PATH
+    fi
   fi
 done
