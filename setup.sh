@@ -1,14 +1,36 @@
 #!/bin/zsh
 
-if [[ -f ~/.zshrc ]]; then
-  if [[ ! -f ~/.zshrc-local ]]; then
-    echo "Backing up existing .zshrc file to: ~/.zshrc-local, this should still be loaded"
-    mv ~/.zshrc ~/.zshrc-local
-  else
-    echo "A .zshrc and .zshrc-local file already exists. Please delete one to continue"
-    exit 1
+backup_and_link() {
+  local DESIRED_FILE=$1
+  local BACKUP_FILE_NAME=$2
+  local SYMLINK_SOURCE=$3
+
+  # if file exists
+  if [[ -f $DESIRED_FILE ]]; then
+    # if file is already a symlink
+    if [[ -L $DESIRED_FILE ]]; then
+      echo "$DESIRED_FILE is already linked"
+      return
+    else
+      if [[ -f $BACKUP_FILE_NAME ]]; then
+        echo "$DESIRED_FILE and $BACKUP_FILE_NAME already exists, delete one to continue"
+        return
+      fi
+
+      # backup file
+      echo "Backing up $DESIRED_FILE to $BACKUP_FILE_NAME"
+      mv $DESIRED_FILE $BACKUP_FILE_NAME
+    fi
   fi
-fi
+
+  # if symlink source is provided, symlink file
+  if [[ -f $SYMLINK_SOURCE ]]; then
+    echo "Linking $SYMLINK_SOURCE to $DESIRED_FILE"
+    ln -s $SYMLINK_SOURCE $DESIRED_FILE
+  fi
+}
+
+backup_and_link ~/.zshrc ~/.zshrc-local
 
 # Install Oh My Zsh if it is not already installed
 if [[ ! -d ~/.oh-my-zsh ]]; then
@@ -26,12 +48,5 @@ echo "Symlinking dotfiles into home directory"
 for file in ~/dotfiles/dotfiles/*(DN); do
   NEW_PATH=$(echo $file | sed "s/dotfiles\/dotfiles\///")
 
-  if [[ ! -L $NEW_PATH ]]; then
-    if [[ -f $NEW_PATH ]]; then
-      echo "$NEW_PATH exists and is not a proper symlink, renaming file to $NEW_PATH.backup"
-      mv $NEW_PATH $NEW_PATH.backup
-    else  
-      ln -s $file $NEW_PATH
-    fi
-  fi
+  backup_and_link $NEW_PATH $NEW_PATH.backup $file
 done
