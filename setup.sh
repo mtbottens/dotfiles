@@ -32,6 +32,13 @@ backup_and_link() {
 
 backup_and_link ~/.zshrc ~/.zshrc-local
 
+# Install iTerm shell integration if it is not already installed
+if [[ ! -f ~/.iterm2_shell_integration.zsh ]]; then
+  echo "Installing iTerm shell integration"
+  curl -L https://iterm2.com/shell_integration/zsh \
+    -o ~/.iterm2_shell_integration.zsh
+fi
+
 # Install Oh My Zsh if it is not already installed
 if [[ ! -d ~/.oh-my-zsh ]]; then
   echo "Installing Oh My Zsh"
