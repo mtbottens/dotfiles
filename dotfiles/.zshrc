@@ -114,3 +114,4 @@ source $ZSH/oh-my-zsh.sh
 [[ ! -f ~/.zshrc-local ]] || source ~/.zshrc-local
 
 source ~/.iterm2_shell_integration.zsh
+source ~/.functions.zsh
