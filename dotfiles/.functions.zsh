@@ -5,7 +5,7 @@ download_latest_rubymine() {
   mkdir -p /home/spin/.cache/rubymine
   curl -L $RM_VERSION_LINK --output /tmp/rubymine.tar.gz
   tar -zxf /tmp/rubymine.tar.gz -C /home/spin/.cache/rubymine
-  */bin/remote-dev-server.sh registerBackendLocationForGateway
+  ~/.cache/rubymine/*/bin/remote-dev-server.sh registerBackendLocationForGateway
 }
 
 install_latest_rubymine() {
@@ -17,9 +17,18 @@ install_latest_rubymine() {
   fi
 }
 
+register_spin_with_jetbrains() {
+  ~/dotfiles/ruby/update-jetbrains-ssh-connections.rb
+}
+
 if [[ $SPIN ]]; then
   # todo: latest needs to be replaced with version of extracted rubymine archive, can get this value from curl request
   if [[ ! -d ~/home/spin/.cache/rubymine ]]; then
     install_latest_rubymine
   fi
+fi
+
+if which spin > /dev/null; then
+  # register spin domains with JetBrains IDE's
+  register_spin_with_jetbrains
 fi
