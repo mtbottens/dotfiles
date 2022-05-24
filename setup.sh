@@ -59,6 +59,8 @@ for file in ~/dotfiles/dotfiles/*(DN); do
 done
 
 # Install RubyMine on Spin if it is not already installed
+source ~/.functions.zsh
+
 if [[ $SPIN ]]; then
   if [[ ! -d ~/home/spin/.cache/rubymine ]]; then
     install_latest_rubymine
