@@ -57,3 +57,10 @@ for file in ~/dotfiles/dotfiles/*(DN); do
 
   backup_and_link $NEW_PATH $NEW_PATH.backup $file
 done
+
+# Install RubyMine on Spin if it is not already installed
+if [[ $SPIN ]]; then
+  if [[ ! -d ~/home/spin/.cache/rubymine ]]; then
+    install_latest_rubymine
+  fi
+fi

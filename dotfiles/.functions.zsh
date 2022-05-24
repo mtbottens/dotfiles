@@ -21,13 +21,6 @@ register_spin_with_jetbrains() {
   ~/dotfiles/ruby/update-jetbrains-ssh-connections.rb
 }
 
-if [[ $SPIN ]]; then
-  # todo: latest needs to be replaced with version of extracted rubymine archive, can get this value from curl request
-  if [[ ! -d ~/home/spin/.cache/rubymine ]]; then
-    install_latest_rubymine
-  fi
-fi
-
 if which spin > /dev/null; then
   # register spin domains with JetBrains IDE's
   register_spin_with_jetbrains
