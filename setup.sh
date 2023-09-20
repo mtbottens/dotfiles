@@ -45,10 +45,12 @@ if [[ ! -d ~/.oh-my-zsh ]]; then
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
-# Install powerlevel10k if it is not already installed
-if [[ ! -d ~/.oh-my-zsh/custom/themes/powerlevel10k ]]; then
-  echo "Installing powerlevel10k theme"
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+# Install starship if it is not already installed
+if [[ ! -f ~/starship.sh ]]; then
+  echo "Installing starship"
+  curl -sS https://starship.rs/install.sh > ~/starship.sh
+  chmod +x ~/starship.sh
+  ~/starship.sh --y
 fi
 
 echo "Symlinking dotfiles into home directory"
@@ -58,11 +60,12 @@ for file in ~/dotfiles/dotfiles/*(DN); do
   backup_and_link $NEW_PATH $NEW_PATH.backup $file
 done
 
+# Haven't used this in a while, consider deleting
 # Install RubyMine on Spin if it is not already installed
-source ~/.functions.zsh
+# source ~/.functions.zsh
 
-if [[ $SPIN ]]; then
-  if [[ ! -d ~/home/spin/.cache/rubymine ]]; then
-    install_latest_rubymine
-  fi
-fi
+# if [[ $SPIN ]]; then
+#   if [[ ! -d ~/home/spin/.cache/rubymine ]]; then
+#     install_latest_rubymine
+#   fi
+# fi
