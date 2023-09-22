@@ -50,7 +50,7 @@ if [[ ! -f ~/starship.sh ]]; then
   echo "Installing starship"
   curl -sS https://starship.rs/install.sh > ~/starship.sh
   chmod +x ~/starship.sh
-  ~/starship.sh --y
+  ~/starship.sh -y
 fi
 
 echo "Symlinking dotfiles into home directory"
